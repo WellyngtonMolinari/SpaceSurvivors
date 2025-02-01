@@ -12,7 +12,6 @@ public class PlayerMovement : MonoBehaviour
     public Sprite idleSprite;
     public Sprite turnLeftSprite;
     public Sprite turnRightSprite;
-    public Sprite damagedSprite;
 
     private Vector2 targetVelocity;
     private Vector2 mousePosition;
@@ -64,16 +63,5 @@ public class PlayerMovement : MonoBehaviour
         if (moveX < 0) spriteRenderer.sprite = turnLeftSprite;
         else if (moveX > 0) spriteRenderer.sprite = turnRightSprite;
         else spriteRenderer.sprite = idleSprite;
-    }
-
-    public void TakeDamage()
-    {
-        spriteRenderer.sprite = damagedSprite;
-        Invoke("ResetSprite", 1f);
-    }
-
-    void ResetSprite()
-    {
-        UpdateSprite(Input.GetAxisRaw("Horizontal"));
     }
 }

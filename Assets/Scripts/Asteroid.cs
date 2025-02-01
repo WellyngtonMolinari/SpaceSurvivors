@@ -2,64 +2,53 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    public float speed = 3f; // Movement speed
-    public float rotationSpeed = 50f; // Base rotation speed
-    public float rotationSpeedIncrease = 100f; // Speed increase on collision
-    public int damage = 1; // Damage dealt to the player
+    public float speed = 3f; // Velocidade de movimento
+    public float rotationSpeed = 50f; // Velocidade de rotação base
+    public float rotationSpeedIncrease = 100f; // Aumento da rotação após colisão
+    public int damage = 1; // Dano causado ao jogador
 
-    private Vector2 direction;
     private Rigidbody2D rb;
 
     void Start()
     {
-        direction = Random.insideUnitCircle.normalized; // Random direction
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    void Update()
-    {
-        // Move the asteroid
-        transform.Translate(direction * speed * Time.deltaTime, Space.World);
-
-        // Rotate the asteroid
-        transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            // Collision with the player
-            PlayerMovement player = other.GetComponent<PlayerMovement>();
-            if (player != null)
-            {
-                player.TakeDamage(damage); // Damage the player
-            }
-
-            // Increase rotation speed
-            rotationSpeed += rotationSpeedIncrease;
-        }
-        else if (other.CompareTag("Laser"))
-        {
-            // Collision with a laser
-            Destroy(other.gameObject); // Destroy the laser
-            rotationSpeed += rotationSpeedIncrease; // Increase rotation speed
-        }
+        Vector2 randomDirection = Random.insideUnitCircle.normalized;
+        rb.linearVelocity = randomDirection * speed; // Usa linearVelocity para movimento
+        rb.angularVelocity = rotationSpeed; // Define a rotação inicial
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log("Meteor collided with: " + collision.collider.name);
+
         if (collision.collider.CompareTag("Player"))
         {
-            // Collision with the player (physics-based)
-            PlayerMovement player = collision.collider.GetComponent<PlayerMovement>();
-            if (player != null)
+            Debug.Log("Collided with player!");
+            PlayerHealth playerHealth = collision.collider.GetComponent<PlayerHealth>();
+            if (playerHealth != null)
             {
-                player.TakeDamage(damage); // Damage the player
+                playerHealth.TakeDamage(damage); // Aplica dano ao jogador
             }
 
-            // Increase rotation speed
-            rotationSpeed += rotationSpeedIncrease;
+            // Calcula a nova direção de movimento usando a normal da colisão
+            Vector2 newDirection = Vector2.Reflect(rb.linearVelocity.normalized, collision.contacts[0].normal);
+            rb.linearVelocity = newDirection * speed; // Aplica a nova velocidade
+
+            // Aumenta a rotação
+            rb.angularVelocity += rotationSpeedIncrease;
+        }
+        else if (collision.collider.CompareTag("Laser"))
+        {
+            Debug.Log("Collided with laser!");
+            Destroy(collision.gameObject); // Destroi o laser
+            rb.angularVelocity += rotationSpeedIncrease; // Aumenta a rotação
+        }
+        else
+        {
+            Debug.Log("Collided with something else!");
+            // Rebater ao colidir com qualquer outro objeto
+            Vector2 newDirection = Vector2.Reflect(rb.linearVelocity.normalized, collision.contacts[0].normal);
+            rb.linearVelocity = newDirection * speed;
         }
     }
 }
