@@ -151,7 +151,7 @@ MonoBehaviour:
   enemyPrefabs:
   - {fileID: 3709991381717954182, guid: bf7be71f63fd62640900e701289592f7, type: 3}
   - {fileID: 1311241522626065834, guid: b42803b94b50fff4c96ed1513738018c, type: 3}
-  spawnRate: 1
+  spawnRate: 0.5
   spawnRadius: 10
 --- !u!4 &5155027
 Transform:
@@ -403,6 +403,7 @@ GameObject:
   - component: {fileID: 1635209130}
   - component: {fileID: 1635209129}
   - component: {fileID: 1635209134}
+  - component: {fileID: 1635209135}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -431,7 +432,6 @@ MonoBehaviour:
   idleSprite: {fileID: 4334783836991956000, guid: 26a591c7cb7a9aa4094745ef5fe9b31c, type: 3}
   turnLeftSprite: {fileID: -7728366263762034472, guid: e760065d4797e124fbb987d6ba8423ea, type: 3}
   turnRightSprite: {fileID: 3940846164783008679, guid: bba43b8909a145f4abfeb5c947aac3ef, type: 3}
-  damagedSprite: {fileID: 2595440846608069888, guid: 771ab53adb6776a4e819faca02e4e3ed, type: 3}
 --- !u!58 &1635209130
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -476,14 +476,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635209128}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -493,7 +493,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!212 &1635209132
 SpriteRenderer:
@@ -579,6 +579,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   laserPrefab: {fileID: 3194038086343627975, guid: 5b5a2738ac3a2ab468ddb70784f3b362, type: 3}
   fireRate: 0.5
+--- !u!114 &1635209135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635209128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ea42a7fd006c334fa285357875b6e23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  spriteRenderer: {fileID: 1635209132}
+  damageSprites:
+  - {fileID: 2595440846608069888, guid: 771ab53adb6776a4e819faca02e4e3ed, type: 3}
+  - {fileID: 2999410000573169006, guid: 64a736fb1ed7dca468267067d54df348, type: 3}
+  invincibilityDuration: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
